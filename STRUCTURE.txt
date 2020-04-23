@@ -1,0 +1,177 @@
+
+████████╗██████╗ ██╗████████╗ ██████╗ ███╗   ██╗
+╚══██╔══╝██╔══██╗██║╚══██╔══╝██╔═══██╗████╗  ██║
+   ██║   ██████╔╝██║   ██║   ██║   ██║██╔██╗ ██║
+   ██║   ██╔══██╗██║   ██║   ██║   ██║██║╚██╗██║
+   ██║   ██║  ██║██║   ██║   ╚██████╔╝██║ ╚████║
+   ╚═╝   ╚═╝  ╚═╝╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═══╝
+
+Alpha 0.0, distributed under gnu-gpl3 license
+Michael Freeman (still actually Michael Svoboda, but oh boi, one day...)
+2020
+
+
+                            ----- Database Structure -----
+
+The Triton database system is divided into two major databases: DOCUMENTS and TECHNICALITIES.
+
+TECHNICALITIES is a standalone SQL database Includes tables:
+~ human  -> (id), username, gender, email, phone, role, permissions
+
+  human
+# Includes info about every single person using the Triton clone:
+Role - person's place in the organization (e.g. teacher, student, outsider)
+Username - includes academic and scientific title () - must be UNIQUE
+Gender - default options are masculine and feminine
+E-mail - most fundamental, must be UNIQUE
+Phone number (optional)
+Address (optional)
+Optional characteristics may become mandatory, depending on the preferences of the organization.
+
+DOCUMENTS is an SQL database loading files from the Documents register. Includes tables:
+~ article  -> (id), headline, author, published, docpath
+~ paper -> (id), topic, course, author, license, version, published, docpath
+~ recent_paper -> (id), topic, course, author, license, version, published, docpath
+
+  article
+# Includes notices and announcements made by organization to its members/subscribers:
+headline UNIQUE
+author
+visibility - some articles are only for insiders' eyes
+published - date of publishing, determines expiration date
+docpath - path to the text file (supports: PDF, XML, TXT; e.g. Documents/storm.pdf) UNIQUE
+
+  paper & recent_paper
+# paper includes formal didactic material - essay, report, academic article, open letter...
+# recent_paper has the same structure as paper, but includes only the freshest publications
+topic
+course
+author
+license
+version
+published - date of publishing, determines expiration date
+docpath - path to the text file (supports: PDF, XML, TXT; e.g. Documents/storm.pdf)
+
+
+                      ----- Project Structure (folders & scripts) -----
+
+Triton clone follows a popular variant of MVC (Model, Controller, View) architecture
+
+All derivative Db classes contain string $lastError, eg. ". ~ probeAll()"
+All methods return false on failure
+
+(~ STRUCTURE.txt, this file)
+(~ LICENSE.txt, GNU GPL 3)
+(~ composer.json - controls vendor plugins)
+(~composer.lock)
+~ vendor (folder) - tools this project is built on, eg. PHPWord or PDFParser
+~ index.php - sign-in Triton page, starts session and autoloads classes
+~ DOCUMENTS (folder) - split into PAPER and ARTICLE containing corresponding files form DOCUMENTS database
+~ Model (folder)
+~ View (folder)
+~ Model (folder)
+~ devTests.php (folder) - development stage, custom php snippets for testing methods of Readers and Writers classes
+
+
+  ######## Model ########  # Uniquely contains scripts reading and altering databases
+
+DbInit.php - procedural script creating system's database structure
+
+
+Db.php ; all Model scripts below contain this abstract class with connection to a specific database
+  /* static connect() */
+
+
+DbReader.php - extends Db ; reads data from both databases
+  /*   --- probe() ---
+  Read data from 1 table,
+  returs assoc. array of arrays
+  id => row:
+    columns */
+
+    /* --- probeAll() ---
+    Read data from all tables in DB,  # ERRORS NOT HANDELED YET!
+    returs assoc. array of asoc. arrays of arrays:
+    table name => rows:
+      id => row:
+        columns */
+
+
+DbWriter.php - extends DbReader ; writes and changes data in both databases
+  /* --- insertRow() ---
+  Insert one or more COMPLETE rows (string/array of strings) into specified table
+  $values, format: (quoting STRUCTURE.txt, AUTO_INCREMENT id omitted on purpose)
+  ~ human  -> (id), username, gender, email, password, phone, role, permissions
+
+  ~ article  -> (id), headline, author, date, docpath
+  ~ paper -> (id), topic, course, author, license, version, published, docpath
+  ~ recent_paper -> (id), topic, course, author, license, version, published, docpath */
+
+  /*  --- delete() ---
+  Safely deletes records fitting condition, doesn't support multiple conditions */
+
+  /*  --- updateOne() ---
+  Modifies one row of database */
+
+DbFileReader.php - extends DbWriter ; concerned with DOCUMENTS (both DB and folder)
+  /*    --- getTable() ---
+  Searches document through tables by its name or docpath (often from makePath()
+  If $checkedTable is unspecified, returns first found in order:
+    recent_paper, paper, article
+  If $justChecking == true, doesn't record into $lastError
+  */
+
+  /*    --- makePatht() ---
+  Converts the name-version combination in a document into a valid docpath
+  examples:
+    What a marvelous heading! >>> DOCUMENTS/ARTICLE/WhatAMarvellousHeading.pdf
+    !%^*@^#*Ab)*&@ >>> DOCUMENTS/PAPER/Ab.txt */
+
+  /*    --- getDocInfo() ---
+  If specific path is known, supply only path (it contains the others)
+  assumes document name in a correct format!
+  all parameters are ultimately needed, but can be deduced
+  limit is number of characters
+
+  returns assoc. array, eg.:
+      "docpath" => /DOCUMENTS/PAPER/Electromagnetism1.pdf
+        "table" => "paper"
+          "name" => "Electromagnetism1.pdf"
+    "extension" => "pdf"  */
+
+  /*    --- readDoc() ---
+  Returns string - human text of a document (or part of it, bound by character $limit)
+  uses getDocInfo to find and verify document */
+
+  /*    --- checkDb() ---
+  Goes through DOCUMENTS and databases and handles dissonances
+  If no docpath is specified, performs a non-interruptive general scan and informs admin of any problems (once a week/day/month)
+  Otherwise returns false (breaks the process) if either file or matching record is missing*/
+
+
+DbFileWriter.php - extends DbFileReader ; concerned with DOCUMENTS, writes and alters data
+  /*   --- uploadDoc() ---
+  Creates a record of a doc fom $_POST and places it in appropriate folder
+  $name is not processed any further, must be already standardized
+  $data is an assoc. array dependent on $form (article/paper) */
+
+  /*    --- discardDoc() ---
+  Deletes a document and its corresponding record from DB
+  if $history == true, all older versions of document are deleted as well
+  if $all is true, the most recent gets deleted too*/
+  ######## View ########
+
+# Instructed by controller, displays webpage content and sends requests to Controller
+* Some to come *
+
+
+  ######## Controller ########
+
+# Contains scripts with Controller requests other than those directly by user
+* Some to come *
+
+
+                                  ----- Code conventions -----
+
+Triton's inner structure strictly abides by following conventions:
+MySQL - https://launchbylunch.com/posts/2014/Feb/16/sql-naming-conventions/#naming-conventions
