@@ -20,9 +20,21 @@
     phone varchar(255) NOT NULL,
     role varchar(255) NOT NULL,
     permissions varchar(255) NOT NULL,
+    widgets varchar(255) NOT NULL,
     PRIMARY KEY (id)
     ";
     createTable($servername, $username, $password, "TECHNICALITIES", "human", $columns);
+
+    $columns = "
+    id int(11) AUTO_INCREMENT,
+    page varchar(255) UNIQUE NOT NULL,
+    layer varchar(255) NOT NULL,
+    category varchar(255) NOT NULL,
+    widgets varchar(255) NOT NULL,
+    PRIMARY KEY (id)
+    ";
+    createTable($servername, $username, $password, "TECHNICALITIES", "page", $columns);
+
 
     createDb($servername, $username, $password, "DOCUMENTS");
     $columns = "

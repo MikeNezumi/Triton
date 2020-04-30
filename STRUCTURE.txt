@@ -17,16 +17,27 @@ The Triton database system is divided into two major databases: DOCUMENTS and TE
 
 TECHNICALITIES is a standalone SQL database Includes tables:
 ~ human  -> (id), username, gender, email, phone, role, permissions
+~ page  -> (id), page, layer, category, widgets
 
   human
-# Includes info about every single person using the Triton clone:
+# Includes info about every single person using the Triton clone
+# Optional characteristics may become mandatory, depending on the preferences of the organization.
 Role - person's place in the organization (e.g. teacher, student, outsider)
 Username - includes academic and scientific title () - must be UNIQUE
 Gender - default options are masculine and feminine
 E-mail - most fundamental, must be UNIQUE
 Phone number (optional)
 Address (optional)
-Optional characteristics may become mandatory, depending on the preferences of the organization.
+Widgets - associative array of widgets and their layout on user's personalized page
+
+  page
+# Determines page structure of specific Triton's clone
+Page - person's place in the organization (e.g. teacher, student, outsider)
+Layer - defines access to page; public (all can see), club (registrated members), or backstage (staff only)
+Category (globally optional) - broader thematic group the page is part of (for navBar)
+widgets - associative array of widgets and their layout on one page
+
+
 
 DOCUMENTS is an SQL database loading files from the Documents register. Includes tables:
 ~ article  -> (id), headline, author, published, docpath
@@ -159,6 +170,8 @@ DbFileWriter.php - extends DbFileReader ; concerned with DOCUMENTS, writes and a
   Deletes a document and its corresponding record from DB
   if $history == true, all older versions of document are deleted as well
   if $all is true, the most recent gets deleted too*/
+
+
   ######## View ########
 
 # Instructed by controller, displays webpage content and sends requests to Controller
