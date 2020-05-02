@@ -30,7 +30,7 @@
     page varchar(255) UNIQUE NOT NULL,
     layer varchar(255) NOT NULL,
     category varchar(255) NOT NULL,
-    widgets varchar(255) NOT NULL,
+    widgets varchar(8000) NOT NULL,
     PRIMARY KEY (id)
     ";
     createTable($servername, $username, $password, "TECHNICALITIES", "page", $columns);
