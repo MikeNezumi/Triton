@@ -1,5 +1,4 @@
 <?php
-require_once('DbReader.php');  # dev (autoloading from index.php in distribution)
 /* Prober for the purpose of altering tables */
 class DbWriter extends DbReader
 {

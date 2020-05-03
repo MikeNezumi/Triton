@@ -1,5 +1,4 @@
 <?php
-require_once('Db.php');  # temporary (autoloading from index.php in distribution)
 /* Prober for the purpose of reading tables*/
 class DbReader extends Db
 {

@@ -1,5 +1,4 @@
 <?php
-require("DbWriter.php");  # dev
 /* Prober for the purpose of saving and loading files from DOCUMENTS */
 class DbFileReader extends DbWriter
 {

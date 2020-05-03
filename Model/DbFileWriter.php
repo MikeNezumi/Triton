@@ -1,6 +1,4 @@
 <?php
-require_once('DbFileReader.php');  # dev (autoloading from index.php in distribution)
-
 /* Class for writing document files and corresponding records */
 class DbFileWriter extends DbFileReader
 {
