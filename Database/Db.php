@@ -12,11 +12,11 @@ abstract class Db
 	];
 
 	/* Connection to DB */
-	protected static function connect($server, $user, $password, $database)
+	static function connect($server, $user, $password)
 	{
 		if(!isset(self::$conn)){
 			self::$conn = @ new PDO(
-				"mysql:host=$server; dbname=$database",
+				"mysql:host=$server",
 				$user,
 				$password,
 				self::$options

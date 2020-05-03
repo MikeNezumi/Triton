@@ -66,7 +66,10 @@ docpath - path to the text file (supports: PDF, XML, TXT; e.g. Documents/storm.p
 
                       ----- Project Structure (folders & scripts) -----
 
-Triton clone follows a popular variant of MVC (Model, Controller, View) architecture
+Triton divides its classes into 3 categories:
+    Database - those directly connecting to DB
+    Widget - php scripts giving HTML to page.php, forming cells of Grid
+    *others0* - index.php and, above all, page.php
 
 All derivative Db classes contain string $lastError, eg. ". ~ probeAll()"
 All methods return false on failure
@@ -78,13 +81,12 @@ All methods return false on failure
 ~ vendor (folder) - tools this project is built on, eg. PHPWord or PDFParser
 ~ index.php - sign-in Triton page, starts session and autoloads classes
 ~ DOCUMENTS (folder) - split into PAPER and ARTICLE containing corresponding files form DOCUMENTS database
-~ Model (folder)
-~ View (folder)
-~ Model (folder)
+~ Database (folder)
+~ Widgets (folder)
 ~ devTests.php (folder) - development stage, custom php snippets for testing methods of Readers and Writers classes
 
 
-  ######## Model ########  # Uniquely contains scripts reading and altering databases
+  ######## Database ########  # Uniquely contains scripts reading and altering databases
 
 DbInit.php - procedural script creating system's database structure
 
@@ -172,17 +174,10 @@ DbFileWriter.php - extends DbFileReader ; concerned with DOCUMENTS, writes and a
   if $all is true, the most recent gets deleted too*/
 
 
-  ######## View ########
+  ######## Widget ########
 
-# Instructed by controller, displays webpage content and sends requests to Controller
+# Displays grid content
 * Some to come *
-
-
-  ######## Controller ########
-
-# Contains scripts with Controller requests other than those directly by user
-* Some to come *
-
 
                                   ----- Code conventions -----
 
