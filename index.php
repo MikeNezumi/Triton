@@ -8,9 +8,9 @@
 	{
 		/* Is it Model or Controller? */
 		if (preg_match("/Db/", $class)){
-			require_once("Database/" . $class . ".php");
+			include_once("Database/" . $class . ".php");
 		} else if (preg_match("/Widget/", $class)) {
-			require_once('Widget/' . $class . ".php");
+			include_once("Widget/" . $class . ".php");
 		}
 		else {
 			require_once($class . ".php");
@@ -30,9 +30,9 @@
   <body>
     <div class="grid">
 			<?php
-			$inserter = new DbWriter("localhost", "root", "database", "DOCUMENTS");
-			$inserter->insertRow("article", ["headline" => "Search succesful!", "author" => "mike", "visibility" => "all", "docpath" => "DOCUMENTS/ARTICLE/SearchSuccesful.txt"]);
-			echo $inserter->lastError;
+				// Page.php - method loadPages() test
+				$page = new Page();
+				$page->loadPages();
 				/*
 				#  Displaying each widget on page:
 				foreach ($variable as $key => $value) {

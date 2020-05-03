@@ -2,9 +2,9 @@
 /* General DB Connector, common for all specified probers */
 abstract class Db
 {
-	var $server = "localhost";
-	var $user = "root";
-	var $password = "database";
+	const SERVER = "localhost";
+	const USER = "root";
+	const PASSWORD = "database";
 
 	protected static $conn;
 	/* DB settings */
@@ -20,9 +20,9 @@ abstract class Db
 	{
 		if(!isset(self::$conn)){
 			self::$conn = @ new PDO(
-				"mysql:host=$this->server; dbname=$database",
-				$this->user,
-				$this->password,
+				"mysql:host=" . self::SERVER . "; dbname=$database",
+				self::USER,
+				self::PASSWORD,
 				self::$options
 			);
 		}

@@ -1,6 +1,7 @@
 <?php
 
 /* index.php uses Page class to load custom css, pages, and their widgets' HTML
+   from TECHNICALITIES - page
  */
 class Page extends DbReader
 {
@@ -10,9 +11,11 @@ class Page extends DbReader
   function __construct()
   {
     parent::__construct("TECHNICALITIES");
+  }
 
   function loadPages()
   {
-    $pages = probe("page");
+    $pages = $this->probe("page", "page");
+    print_r($pages);
   }
 }
