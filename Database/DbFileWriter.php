@@ -3,10 +3,9 @@
 class DbFileWriter extends DbFileReader
 {
   /* File classes run exclusively for DOCUMENTS db */
-  function __construct($server, $user, $password)
+  function __construct()
   {
-    parent::__construct($server, $user, $password, "DOCUMENTS");
-    self::connect($server, $user, $password, "DOCUMENTS");
+    self::connect("DOCUMENTS");
   }
 
   const BIT_LIMIT = 8000000;  # 8 Mb upload limit

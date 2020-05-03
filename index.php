@@ -18,8 +18,6 @@
 	}
 
 	spl_autoload_register("autoloadFunction");
-	// Connect to DB, dev as it stands
-	Db::connect("localhost", "root", "database");
 ?>
 
 <!DOCTYPE html>

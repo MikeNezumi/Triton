@@ -16,14 +16,10 @@ class DbWriter extends DbReader
                        VALUES (:topic, :course, :author, :license, :version, :docpath)"
     );  # holds INSERT sql for each table, AUTO_INCREMENTed id omitted
 
-  function __construct($server, $user, $password, $database)
-  {
-    $this->server = $server;
-    $this->user = $user;
-    $this->password = $password;
-    $this->database = $database;
-    self::connect($server, $user, $password, $database);
-  }
+    function __construct($database)
+    {
+      self::connect($database);
+    }
 
   var $lastError = "No recorded errors";  # last error that occured using this object
 

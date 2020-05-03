@@ -2,13 +2,9 @@
 /* Prober for the purpose of reading tables*/
 class DbReader extends Db
 {
-  function __construct($server, $user, $password, $database)
+  function __construct($database)
   {
-    $this->server = $server;
-    $this->user = $user;
-    $this->password = $password;
-    $this->database = $database;
-    self::connect($server, $user, $password, $database);
+    self::connect($database);
   }
 
   var $lastError = "No recorded errors.";  # last error that occured using this object

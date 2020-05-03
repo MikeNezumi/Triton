@@ -2,6 +2,10 @@
 /* General DB Connector, common for all specified probers */
 abstract class Db
 {
+	var $server = "localhost";
+	var $user = "root";
+	var $password = "database";
+
 	protected static $conn;
 	/* DB settings */
 	public static $options = [
@@ -12,13 +16,13 @@ abstract class Db
 	];
 
 	/* Connection to DB */
-	static function connect($server, $user, $password)
+	static function connect($database)
 	{
 		if(!isset(self::$conn)){
 			self::$conn = @ new PDO(
-				"mysql:host=$server",
-				$user,
-				$password,
+				"mysql:host=$this->server; dbname=$database",
+				$this->user,
+				$this->password,
 				self::$options
 			);
 		}

@@ -3,10 +3,9 @@
 class DbFileReader extends DbWriter
 {
   /* File classes run exclusively for DOCUMENTS db */
-  function __construct($server, $user, $password)
+  function __construct()
   {
-    parent::__construct($server, $user, $password, "DOCUMENTS");
-    self::connect($server, $user, $password, "DOCUMENTS");
+    self::connect("DOCUMENTS");
   }
 
   const DOC_EXTENSIONS = ["txt", "html", "rtf", "doc", "docm", "docx", "odt", "epub", "xml", "pdf"];
