@@ -27,7 +27,7 @@
 
     $columns = "
     id int(11) AUTO_INCREMENT,
-    page varchar(255) UNIQUE NOT NULL,
+    name varchar(255) UNIQUE NOT NULL,
     layer varchar(255) NOT NULL,
     category varchar(255) NOT NULL,
     widgets varchar(8000) NOT NULL,

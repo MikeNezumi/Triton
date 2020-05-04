@@ -11,9 +11,9 @@ class DbReader extends Db
 
   /*   --- probe() ---
   Read data from 1 table,
-  returs assoc. array of arrays
+  returs assoc. array of assoc. arrays
   id => row:
-    columns */
+    column => content */
   function probe($table, $columns = "*", $conditions = "true"){  # sql strings
     try {
       $content = self::$conn->query("SELECT $columns FROM $table WHERE $conditions;");
@@ -30,7 +30,7 @@ class DbReader extends Db
   returs assoc. array of asoc. arrays of arrays:
   table name => rows:
     id => row:
-      columns */
+      columns => content */
   function probeAll($columns = "*", $conditions = "true")
   {
     $content = array();

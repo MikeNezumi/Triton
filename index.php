@@ -31,8 +31,10 @@
     <div class="grid">
 			<?php
 				// Page.php - method loadPages() test
+				require("Page.php");
 				$page = new Page();
-				$page->loadPages();
+				print_r($page->loadPages());
+				echo $page->lastError;
 				/*
 				#  Displaying each widget on page:
 				foreach ($variable as $key => $value) {

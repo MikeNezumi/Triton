@@ -32,7 +32,7 @@ Widgets - associative array of widgets and their layout on user's personalized p
 
   page
 # Determines page structure of specific Triton's clone
-Page - person's place in the organization (e.g. teacher, student, outsider)
+Name - Name of the website section, the page, e.g. Home, Contact-us, Press etc.
 Layer - defines access to page; public (all can see), club (registrated members), or backstage (staff only)
 Category (globally optional) - broader thematic group the page is part of (for navBar)
 widgets - associative array of widgets and their layout on one page
@@ -77,16 +77,34 @@ All methods return false on failure
 (~ STRUCTURE.txt, this file)
 (~ LICENSE.txt, GNU GPL 3)
 (~ composer.json - controls vendor plugins)
-(~composer.lock)
-~ vendor (folder) - tools this project is built on, eg. PHPWord or PDFParser
-~ index.php - sign-in Triton page, starts session and autoloads classes
-~ DOCUMENTS (folder) - split into PAPER and ARTICLE containing corresponding files form DOCUMENTS database
+(~ composer.lock)
+(~ .htaccess)
+(~ .gitignore)
+(~ DevTests.php (folder) - development stage, custom php snippets for testing methods of classes)
+
+~ general.css - stylesheet common to every clone in the world
+~ index.php
+~ Page.php
 ~ Database (folder)
 ~ Widgets (folder)
-~ devTests.php (folder) - development stage, custom php snippets for testing methods of Readers and Writers classes
+~ vendor (folder) - third-party tools this project is built on, eg. PHPWord or PDFParsers
+~ DOCUMENTS (folder) - split into PAPER and ARTICLE containing corresponding files form DOCUMENTS database
+
+
+
+  ######## ( unlisted ) ########  # front-end scripts namely: Page.php and index.php
+
+
+Page.php - chews table 'page' from DB for index.php - provides the HTML it needs.
+  /*  --- loadPages() ---
+  Loads every page of clone, returns array of page names
+  in ascending order by IDs - respects order written in Name, e.g.:
+  1Home, 4Contact, 2News, 3About us -> ["Home", "News", "About us", "Contact"]*/
+
 
 
   ######## Database ########  # Uniquely contains scripts reading and altering databases
+
 
 DbInit.php - procedural script creating system's database structure
 
@@ -97,17 +115,17 @@ Db.php ; all Model scripts below contain this abstract class with connection to 
 
 DbReader.php - extends Db ; reads data from both databases
   /*   --- probe() ---
-  Read data from 1 table,
-  returs assoc. array of arrays
-  id => row:
-    columns */
+  returs assoc. array of asoc. arrays of arrays:
+  table name => rows:
+    id => row:
+      columns => content */
 
-    /* --- probeAll() ---
-    Read data from all tables in DB,  # ERRORS NOT HANDELED YET!
-    returs assoc. array of asoc. arrays of arrays:
-    table name => rows:
-      id => row:
-        columns */
+  /* --- probeAll() ---
+  Read data from all tables in DB,  # ERRORS NOT HANDELED YET!
+  returs assoc. array of asoc. arrays of arrays:
+  table name => rows:
+    id => row:
+      columns => content */
 
 
 DbWriter.php - extends DbReader ; writes and changes data in both databases
@@ -126,6 +144,7 @@ DbWriter.php - extends DbReader ; writes and changes data in both databases
   /*  --- updateOne() ---
   Modifies one row of database */
 
+
 DbFileReader.php - extends DbWriter ; concerned with DOCUMENTS (both DB and folder)
   /*    --- getTable() ---
   Searches document through tables by its name or docpath (often from makePath()
@@ -134,7 +153,7 @@ DbFileReader.php - extends DbWriter ; concerned with DOCUMENTS (both DB and fold
   If $justChecking == true, doesn't record into $lastError
   */
 
-  /*    --- makePatht() ---
+  /*    --- makePath() ---
   Converts the name-version combination in a document into a valid docpath
   examples:
     What a marvelous heading! >>> DOCUMENTS/ARTICLE/WhatAMarvellousHeading.pdf
@@ -174,9 +193,10 @@ DbFileWriter.php - extends DbFileReader ; concerned with DOCUMENTS, writes and a
   if $all is true, the most recent gets deleted too*/
 
 
-  ######## Widget ########
 
-# Displays grid content
+  ######## Widget ########  # Displays grid content
+
+
 * Some to come *
 
                                   ----- Code conventions -----
