@@ -24,17 +24,14 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>CSS Grid</title>
+    <title>Montreal Library | Triton</title>
     <link rel="stylesheet" href="universal.css">
   </head>
   <body>
     <div class="grid">
 			<?php
-				// Page.php - method loadPages() test
-				require("Page.php");
-				$page = new Page();
-				print_r($page->loadPages());
-				echo $page->lastError;
+				$widget = new QuoteWidget(1, 2, 3);
+				$widget->HTML();
 				/*
 				#  Displaying each widget on page:
 				foreach ($variable as $key => $value) {

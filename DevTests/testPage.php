@@ -2,4 +2,5 @@
 // Page.php - method loadPages() test
 require("Page.php");
 $page = new Page();
-echo $page->loadPages()[0];
+print_r($page->loadPages());
+echo $page->lastError;
