@@ -30,8 +30,10 @@
   <body>
     <div class="grid">
 			<?php
-				$widget = new QuoteWidget(1, 2, 3);
-				$widget->HTML();
+				// Page.php - method loadWidgets() test
+				$widget = new Page();
+				$HTML = $widget->loadWidgets("Home");
+				echo $HTML;
 				/*
 				#  Displaying each widget on page:
 				foreach ($variable as $key => $value) {

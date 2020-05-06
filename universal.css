@@ -18,14 +18,8 @@ body {
   grid-column: span 3;
   grid-row: span 1;
 
-  font-size: 12px;
-  text-align: right;
+  background-color: #CCC; /* dev */
 }
-  p.quote {
-    text-align: center;
-    font-style: italic;
-    font-size: 15px;
-  }
 
 .picture {
   grid-column: span 4;

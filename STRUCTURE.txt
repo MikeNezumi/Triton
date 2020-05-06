@@ -37,7 +37,14 @@ Layer - defines access to page; public (all can see), club (registrated members)
 Category (globally optional) - broader thematic group the page is part of (for navBar)
 widgets - associative array of widgets and their layout on one page
 
-
+        L standardized 'widgets' format:
+          quote11 => Per ardua ad astra. - John James Ingalls,
+          quote12 => Ex nihilo nihil fit. - Parmenides,
+          quote13 => Palma non sine pulvere.,
+          picture14 => /IMAGES/Example1.png,
+          table17 => /DOCUMENTS/PAPER/Deutsch1.xml,
+          article14 => /DOCUMENTS/ARTICLE/ReturnOfThePrimitive1.txt,
+          article64 => /DOCUMENTS/ARTICLE/TheRobberBarrons1.txt
 
 DOCUMENTS is an SQL database loading files from the Documents register. Includes tables:
 ~ article  -> (id), headline, author, published, docpath
@@ -96,10 +103,14 @@ All methods return false on failure
 
 
 Page.php - chews table 'page' from DB for index.php - provides the HTML it needs.
-  /*  --- loadPages() ---
-  Loads every page of clone, returns array of page names
+  /*  --- getPages() ---
+  Loads every page of clone from DB, returns array of page names
   in ascending order by IDs - respects order written in Name, e.g.:
   1Home, 4Contact, 2News, 3About us -> ["Home", "News", "About us", "Contact"]*/
+
+  /* --- loadWidget() ---
+  loads 'widgets' of a given page from DB, converts the string into assoc. array,
+  loads widget classes, loads their content into class' string: $HTML and returns it */
 
 
 
@@ -196,8 +207,11 @@ DbFileWriter.php - extends DbFileReader ; concerned with DOCUMENTS, writes and a
 
   ######## Widget ########  # Displays grid content
 
-
-* Some to come *
+  In all passive widgets:
+    /*   --- HTML() ---
+    When called, composes and returnes its HTML content,
+    including CSS for positioninig itself within GRID
+    */
 
                                   ----- Code conventions -----
 
