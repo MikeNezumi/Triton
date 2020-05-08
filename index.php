@@ -32,7 +32,7 @@
 			<?php
 				// Page.php - method loadWidgets() test
 				$widget = new Page();
-				$HTML = $widget->loadWidgets("Home");
+				$HTML = $widget->loadWidgets("E-Books");
 				echo $HTML;
 				/*
 				#  Displaying each widget on page:

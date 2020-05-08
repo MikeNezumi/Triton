@@ -112,6 +112,9 @@ Page.php - chews table 'page' from DB for index.php - provides the HTML it needs
   loads 'widgets' of a given page from DB, converts the string into assoc. array,
   loads widget classes, loads their content into class' string: $HTML and returns it */
 
+  /* --- loadCSS() ---
+  loads general 'brand' CSS specific to any particular Triton clone from TECHNICALITIES
+  *To be constructed* */
 
 
   ######## Database ########  # Uniquely contains scripts reading and altering databases
@@ -206,7 +209,9 @@ DbFileWriter.php - extends DbFileReader ; concerned with DOCUMENTS, writes and a
 
 
   ######## Widget ########  # Displays grid content
-
+  Widgets are graphical bricks the layout consists of. In case of failure, the brick's
+  content changes, e.g. 'Page could not be loaded', but the bricks stays in its place and
+  the website doesn't crash
   In all passive widgets:
     /*   --- HTML() ---
     When called, composes and returnes its HTML content,

@@ -25,7 +25,7 @@ class QuoteWidget implements PassiveWidget
   function HTML(){
     $quote = "";
     $author = "";
-    $text = explode(" - ", $this->widgetString);
+    $text = explode(" | ", $this->widgetString);
     if (sizeof($text) > 1) {
       $author = $text[1];
     }
@@ -47,7 +47,7 @@ class QuoteWidget implements PassiveWidget
     $html = "
       <div class=\"quote\" style=\"$gridCSS\">
         <p style = \"$pCSS\">$quote</p><br>
-          - $author
+          $author
       </div>
     ";
     return $html;
