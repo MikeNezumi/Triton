@@ -13,7 +13,7 @@ Michael Freeman (still actually Michael Svoboda, but oh boi, one day...)
 
                             ----- Database Structure -----
 
-The Triton database system is divided into two major databases: DOCUMENTS and TECHNICALITIES.
+The Triton database system is divided into three major databases: TECHNICALITIES, DOCUMENTS and MEDIA.
 
 TECHNICALITIES is a standalone SQL database Includes tables:
 ~ human  -> (id), username, gender, email, phone, role, permissions
@@ -36,7 +36,6 @@ Name - Name of the website section, the page, e.g. Home, Contact-us, Press etc.
 Layer - defines access to page; public (all can see), club (registrated members), or backstage (staff only)
 Category (globally optional) - broader thematic group the page is part of (for navBar)
 widgets - associative array of widgets and their layout on one page
-
         L standardized 'widgets' format:
           quote11 => Per ardua ad astra. - John James Ingalls,
           quote12 => Ex nihilo nihil fit. - Parmenides,
@@ -57,7 +56,7 @@ headline UNIQUE
 author
 visibility - some articles are only for insiders' eyes
 published - date of publishing, determines expiration date
-docpath - path to the text file (supports: PDF, XML, TXT; e.g. Documents/storm.pdf) UNIQUE
+docpath - path to the text file (supports: PDF, XML, TXT; e.g. DOCUMENTS/storm.pdf) UNIQUE
 
   paper & recent_paper
 # paper includes formal didactic material - essay, report, academic article, open letter...
@@ -70,6 +69,18 @@ version
 published - date of publishing, determines expiration date
 docpath - path to the text file (supports: PDF, XML, TXT; e.g. Documents/storm.pdf)
 
+MEDIA is a database loading files from the MEDIA register. Includes tables:
+~ image  -> (id), content, page, widget, docpath
+  * More to come *
+
+  image
+# Includes records of all images within the clone
+content - alternative text descriptive of the image,
+page - the page within clone the image is part of,
+widget - the widget containing this image,
+docpath - path to file, eg. '/MEDIA/IMAGE/spaghetti.png'
+
+  * More to come *
 
                       ----- Project Structure (folders & scripts) -----
 

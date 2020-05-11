@@ -8,3 +8,5 @@ $inserter->insertRow("article", ["headline" => "Search succesful!", "author" => 
 $censor = new DbFileWriter();
 echo $censor->discardDoc("Test1.txt") . "<br>";
 echo $censor->lastError;
+
+// Database/DbFileWriter - method uploadDoc();

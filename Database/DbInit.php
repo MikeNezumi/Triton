@@ -37,6 +37,7 @@
 
 
     createDb($servername, $username, $password, "DOCUMENTS");
+
     $columns = "
     id int(11) AUTO_INCREMENT,
     headline varchar(255),
@@ -62,6 +63,17 @@
     createTable($servername, $username, $password, "DOCUMENTS", "paper", $columns);
     // Table 'recent_paper' has columns identical to 'paper'
     createTable($servername, $username, $password, "DOCUMENTS", "recent_paper", $columns);
+
+    createDb($servername, $username, $password, "MEDIA");
+    $columns = "
+    id int(11) AUTO_INCREMENT,
+    content varchar(255),
+    page varchar(255),
+    widget varchar(255),
+    docpath varchar(255) UNIQUE,
+    PRIMARY KEY (id)
+    ";
+    createTable($servername, $username, $password, "MEDIA", "image", $columns);
 
     function createDb($servername, $username, $password, $db_name){
       $conn = new mysqli($servername, $username, $password);  # Create connection
