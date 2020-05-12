@@ -10,48 +10,58 @@ class DbFileWriter extends DbFileReader
 
   const BIT_LIMIT = 8000000;  # 8 Mb upload limit
   /*   --- uploadDoc() ---
-  Creates a record of a doc fom $_POST and places it in appropriate folder
-  $name is not processed any further, must be already standardized
-  $data is an assoc. array dependent on $form (article/paper) */
-  function uploadDoc($name, $data, $form = "article"){  # NOT TESTED PRIOR TO FRONT-END!
+  Creates a record of a doc fom $_POST and places it in appropriate folder,
+  doesn't permit uploading duplicates, supplies standardized filename
+  $formName is the name in HTML form, which sends file here
+  $data is an assoc. array dependent on $form (article/paper)
+    $data["path"] may not be pre-composed
+  $form for recent_paper is just "paper" */
+  function uploadDoc($formName, $data, $form = "article"){  # NOT TESTED PRIOR TO FRONT-END!
     // what could've gone wrong during upload' section:
-    if (empty($_FILES[$name])){
+    if (empty($_FILES[$formName])){
       $this->lastError = "No file was being uploaded. ~ uploadDoc()";
       return false;
-    } else if ($_FILES[$name]["error"] != 0) {
+    } else if ($_FILES[$formName]["error"] != 0) {
       $this->lastError = "An error occured during uploading. ~ uploadDoc()";
       return false;
-    } else if ($_FILES[$name]["size"] > BIT_LIMIT) {
+    } else if ($_FILES[$formName]["size"] > self::BIT_LIMIT) {
       $this->lastError = "File is too large to be uploaded. ~ uploadDoc()";
       return false;
     }
-    // verify name
-    $bits = explode(".", $name);
+    // verify data type
+    $bits = explode(".", $_FILES[$formName]["name"]);
     $extension = end($bits);
-    if (!in_array(DOC_EXTENSIONS, $extension)) {
+    if (!in_array($extension, self::DOC_EXTENSIONS)) {
       $this->lastError = "Invalid file type. ~ uploadDoc()";
       return false;
     }
     // create valid path
     if ($form == "paper") {
-      $path = makePath($form, $data["topic"], $data["version"], $extension, true);
+      $path = $this->makePath($form, $data["topic"], $data["version"], $extension, true);
     } else if ($form == "article") {
-      $path = makePath($form, $data["headline"], $data["version"], $extension, true);
+      $path = $this->makePath($form, $data["headline"], 1, $extension, true);
     }
+    $path = substr($path, 1);
     try {
-      $location = chop($path, $name);
+      $newBits = explode("/", $path);
+      $newName = end($newBits);
+      $_FILES[$formName]["name"] = $newName;
     } catch (\Exception $e) {
       error_log("In DbFileWriter => uploadDoc(): " . $e);
       $this->lastError .= " used in uploadDoc()";
       return false;
     }
+    // supplying missing $data
+    if ($data["docpath"] == false) {
+      $data["docpath"] = $path;
+    }
     // attemp uploading file
-    $fileStatus = move_uploaded_file($_FILES[$name], $location);
+    $fileStatus = move_uploaded_file($_FILES[$formName]["tmp_name"], $path);
     if ($fileStatus == false) {
-      $this->lastError .= "Failed to move the uploaded file. ~ uploadDoc()";
+      $this->lastError = "Failed to move the uploaded file. ~ uploadDoc()";
       return false;
     }
-    // attempt creating record
+    // attempt at creating record
     $status = $this->insertRow($form, $data);
     if ($status == false) {
       $this->lastError .= " used in uploadDoc()";

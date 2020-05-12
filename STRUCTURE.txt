@@ -210,7 +210,9 @@ DbFileWriter.php - extends DbFileReader ; concerned with DOCUMENTS, writes and a
   /*   --- uploadDoc() ---
   Creates a record of a doc fom $_POST and places it in appropriate folder
   $name is not processed any further, must be already standardized
-  $data is an assoc. array dependent on $form (article/paper) */
+  $data is an assoc. array dependent on $form (article/paper)
+    $data["path"] may not be pre-composed
+  $form for recent_paper is just "paper" */
 
   /*    --- discardDoc() ---
   Deletes a document and its corresponding record from DB

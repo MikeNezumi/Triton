@@ -23,7 +23,7 @@ class DbFileReader extends DbWriter
     $tables = self::DOC_TABLES;  # get array of tables
     if ($checkedTable !== false) {
       if (in_array($checkedTable, $tables)) {
-        $tables = [$checkedTable];
+        $tables = array($checkedTable);
       } else {
         if ($justChecking == false) {  # non-existing record counts as error
           $this->lastError = "There is no table $checkedTable in DOCUMENTS. ~ getTable()";
@@ -47,7 +47,7 @@ class DbFileReader extends DbWriter
         return $table;
       }
     }
-    if ($justChecking == false) {  # non-existing record counts as error
+    if ($justChecking !== false) {  # non-existing record counts as error
       if ($checkedTable === false) {
         $checkedTable = "any table";
       }
@@ -98,7 +98,7 @@ class DbFileReader extends DbWriter
       return false;
     } else {  # test for duplicate entry
       $path .= "$version.$extension";
-      if ($this->getTable($path, true) == $table and $new == true) {
+      if ($this->getTable($path, $table) == $table and $new == true) {
         $this->lastError = "This file already exists. ~ makePath()";
         return false;
       } else {
