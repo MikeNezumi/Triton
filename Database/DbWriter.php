@@ -13,7 +13,10 @@ class DbWriter extends DbReader
                 VALUES (:topic, :course, :author, :license, :version, :docpath)",
 
     "recent_paper" => "INSERT INTO paper (topic, course, author, license, version, docpath)
-                       VALUES (:topic, :course, :author, :license, :version, :docpath)"
+                       VALUES (:topic, :course, :author, :license, :version, :docpath)",
+
+    "image" => "INSERT INTO image (content, page, widget, docpath)
+                       VALUES (:content, :page, :widget, :docpath)"
     );  # holds INSERT sql for each table, AUTO_INCREMENTed id omitted
 
     function __construct($database)

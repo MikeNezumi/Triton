@@ -280,12 +280,12 @@ class DbFileReader extends DbWriter
   Goes through DOCUMENTS and databases and handles dissonances
   If no docpath is specified, performs a non-interruptive general scan and informs admin of any problems (once a week/day/month)
   Otherwise returns false (breaks the process) if either file or matching record is missing*/
-  function checkDb($docpath = false){
+  function checkDb($docpath = false, $table = false){
     if ($docpath === false) {
       // general maintainance check, under construction
       // also, shifts to and from recent_paper are made here
     } else {
-      $docInfo = $this->getDocInfo($docpath);  # checks for DB record
+      $docInfo = $this->getDocInfo($docpath, false, $table);  # checks for DB record
       if ($docInfo === false) {
         $this->lastError .= " used in checkDb()";
         return false;

@@ -30,7 +30,10 @@
   <body>
     <div class="grid">
 			<?php
-
+			// Model/DbFileWriter - method discardDoc() test
+			$censor = new DbImage();
+			echo $censor->discardImage("Screenshotstrava.png") . "<br>";
+			echo $censor->lastError;
 				/*
 				#  Displaying each widget on page:
 				foreach ($variable as $key => $value) {
