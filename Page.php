@@ -3,15 +3,10 @@
 /* index.php uses Page class to load custom css, pages, and their widgets' HTML
    from TECHNICALITIES - page
  */
-class Page extends DbReader
+class Page
 {
   public $HTML = "";
-
-  /* File classes run exclusively for TECHNICALITIES db */
-  function __construct()
-  {
-    parent::__construct("TECHNICALITIES");
-  }
+  public $lastError = "";
 
   /*  --- getPages() ---
   Loads every page of clone, returns array of page names
@@ -20,7 +15,9 @@ class Page extends DbReader
   function getPages()
   {
     $pageList = array();
-    $pages = $this->probe("page", "name");
+    $DbReader = new DbReader("TECHNICALITIES");  # connect to DB
+    $pages = $DbReader->probe("page", "name");
+    unset($DbReader);  # destroy connection
     foreach ($pages as $id => $page) {
       array_push($pageList, substr($page["name"], 1));
     }
@@ -40,7 +37,9 @@ class Page extends DbReader
     // loading page's 'widgets' array from DB
     $widgets = array();
     $condition = "name LIKE \"%$page\"";  # _ to account for order index
-    $data = $this->probe("page", "widgets", $condition);
+    $DbReader = new DbReader("TECHNICALITIES");  # connect to DB
+    $data = $DbReader->probe("page", "widgets", $condition);
+    unset($DbReader);  # destroy connection
      if ($data == false) {
       $this->lastError = "Requested page doesn't exist. ~ loadWidgets() using probe()";
       return false;
@@ -56,6 +55,7 @@ class Page extends DbReader
       $this->lastError = "This page contains no widgets. ~ loadWidgets()";
       return false;
     }
+
     // loading widgets' classes
     $widget = "";
     $coordinates = "";

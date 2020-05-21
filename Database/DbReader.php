@@ -7,6 +7,10 @@ class DbReader extends Db
     self::connect($database);
   }
 
+  function __destruct(){  # Renew connection when object destroyed
+    self::$conn = null;
+  }
+
   var $lastError = "No recorded errors.";  # last error that occured using this object
 
   /*   --- probe() ---
@@ -15,7 +19,7 @@ class DbReader extends Db
   id => row:
     column => content */
   function probe($table, $columns = "*", $conditions = "true"){  # sql strings
-    try {
+     try {
       $content = self::$conn->query("SELECT $columns FROM $table WHERE $conditions;");
       return $content->fetchAll();
     } catch (\Exception $e) {

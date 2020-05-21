@@ -30,10 +30,11 @@
   <body>
     <div class="grid">
 			<?php
-			// Model/DbFileWriter - method discardDoc() test
-			$censor = new DbImage();
-			echo $censor->discardImage("Screenshotstrava.png") . "<br>";
-			echo $censor->lastError;
+			// Page.php - method loadWidgets() test
+			$widget = new Page();
+			$HTML = $widget->loadWidgets("E-Books");
+			echo $HTML;
+			echo $widget->lastError;
 				/*
 				#  Displaying each widget on page:
 				foreach ($variable as $key => $value) {
