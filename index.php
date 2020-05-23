@@ -34,12 +34,6 @@
 			$widget = new Page();
 			$HTML = $widget->loadWidgets("E-Books");
 			echo $HTML;
-			echo $widget->lastError;
-				/*
-				#  Displaying each widget on page:
-				foreach ($variable as $key => $value) {
-					// code...
-				}*/
 			 ?>
 		</div>
 	</body>

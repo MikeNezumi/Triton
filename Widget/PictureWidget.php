@@ -1,10 +1,3 @@
-<!--
-So far used:
-quote (span 3 span 1)
-picture (span 4 span 3)
-table (span 3 span 3)
-article (span 5 span INF)
--->
 <?php
 /* A piece of text and its author, one day perhaps with a picture
 
@@ -23,7 +16,7 @@ including CSS for positioninig itself within GRID
 $widgetString format for Picture: $docpath | ($aboveCaption) | ($belowCaption)
 */
   function HTML(){
-    $picHTML = "";  # html building block
+    $picHTML = "";  # html grid building block
     $picContent = "";
     $picDocpath = "";
     $elements = ["", "", ""];
@@ -37,19 +30,30 @@ $widgetString format for Picture: $docpath | ($aboveCaption) | ($belowCaption)
     try {
       $DbReader = new DbReader("MEDIA");
       $record = $DbReader->probe("image", "*", "docpath = \"$elements[0]\"");
+      $picContent = $record[0]["content"];
+      $picDocpath = $record[0]["docpath"];
     } catch (\Exception $e) {
       $picHTML = "Loading image went wrong )-:";
       error_log("In PictureWidget: DbReader->probe(): " . $e->getMessage() . "\n");
     } finally {
       if (empty($record)) {
-        echo  "First element: II" . $elements[0] . "II<br>";
-        echo "Last error: " . $DbReader->lastError;
         $picHTML = "Image not found )-:";
       } else {
         $picHTML = "<img src=\"$picDocpath\" alt=\"$picContent\">";
       }
-      echo "<br>Submarine!<br>";
-      print_r($record);
+
+      $gridCSS = "
+        grid-column: $this->column span 4;
+        grid-row: $this->row span 3;
+      ";
+
+      $html = "
+        <div class=\"picture\" style=\"$gridCSS\">
+          $picHTML
+        </div>
+      ";
+
+      return $html;
     }
   }
 }

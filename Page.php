@@ -5,8 +5,32 @@
  */
 class Page
 {
+  public $maxRow = 1;  # refers to maxim topleft corner's row, not total
   public $HTML = "";
   public $lastError = "";
+
+  /*  --- sortHTML() ---
+  Loads in the $chaoticHTML assoc. array*/
+  private function sortHTML($htmlArr){
+    $HTML = "";
+    // go through rows
+    for ($i=1; $i <= $this->maxRow; $i++) {
+      if (isset($htmlArr[$i])) {
+        $rowArr = array();
+        ksort($htmlArr[$i]);
+        foreach ($htmlArr[$i] as $column => $widgetHTML) {
+          $HTML .= $widgetHTML;
+        }
+      }
+    }
+    if ($HTML == "") {
+      $this->lastError = "Pages could not be loaded. ~ sortHTML().";
+      return false;
+    }
+    else {
+      return $HTML;
+    }
+  }
 
   /*  --- getPages() ---
   Loads every page of clone, returns array of page names
@@ -59,6 +83,7 @@ class Page
     // loading widgets' classes
     $widget = "";
     $coordinates = "";
+    $widgetsHTML = array();  # 2-dimentional array[topleft row][topleft column]
     foreach ($widgets as $classInfo => $content) {
       $classInfo = str_split($classInfo);
       foreach ($classInfo as $i => $char) {  # chopping $classinfo into name and coordinates
@@ -75,15 +100,26 @@ class Page
         return false;
       }
       $row = substr($coordinates, 1);
+      if ($this->maxRow < $row) {
+        $this->maxRow = $row;
+      }
+      if (!isset($widgetsHTML[$row])) {
+        $widgetsHTML[$row] = array();
+      }
+
+      $class = ucfirst($widget) . "Widget";
+      $widgetObj = new $class($column, $row, $content);
+
+      // loading widget's HTML
       try {
-        $class = ucfirst($widget) . "Widget";
-        $widgetObj = new $class($column, $row, $content);
-        $this->HTML .= $widgetObj->HTML();
+        $widgetsHTML[$row][$column] = $widgetObj->HTML();
       } catch (\Exception $e) {
         $this->lastError = "Class $class failed. ~ loadWidgets()";
         return false;
       }
     }
+    // sorting widgets to put the into grid in proper order
+    $this->HTML = $this->sortHTML($widgetsHTML);
     return $this->HTML;
   }
 }
